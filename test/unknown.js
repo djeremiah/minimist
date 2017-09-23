@@ -59,6 +59,26 @@ test('string and alias is not unknown', function (t) {
     t.end();
 });
 
+test('number and alias is not unknown', function (t) {
+    var unknown = [];
+    function unknownFn(arg) {
+        unknown.push(arg);
+        return false;
+    }
+    var aliased = [ '-h', 10, '--derp', 20 ];
+    var regular = [ '--herp',  10, '-d', 20 ];
+    var opts = {
+        alias: { h: 'herp' },
+        string: 'h',
+        unknown: unknownFn
+    };
+    var aliasedArgv = parse(aliased, opts);
+    var propertyArgv = parse(regular, opts);
+
+    t.same(unknown, ['--derp', '-d']);
+    t.end();
+});
+
 test('default and alias is not unknown', function (t) {
     var unknown = [];
     function unknownFn(arg) {

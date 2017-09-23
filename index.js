@@ -56,7 +56,7 @@ module.exports = function (args, opts) {
 
     function argDefined(key, arg) {
         return (flags.allBools && /^--[^=]+$/.test(arg)) ||
-            flags.strings[key] || flags.bools[key] || aliases[key];
+            flags.strings[key] || flags.numbers[key] || flags.bools[key] || aliases[key];
     }
 
     function setArg (key, val, arg) {
