@@ -58,6 +58,7 @@ options can be:
 
 * `opts.string` - a string or array of strings argument names to always treat as
 strings
+* `opts.number` - a string or array of strings argument names to always treat as numbers
 * `opts.boolean` - a boolean, string or array of strings to always treat as
 booleans. if `true` will treat all double hyphenated arguments without equal signs
 as boolean (e.g. affects `--foo`, not `-f` or `--foo=bar`)

@@ -1,7 +1,7 @@
 module.exports = function (args, opts) {
     if (!opts) opts = {};
     
-    var flags = { bools : {}, strings : {}, unknownFn: null };
+    var flags = { bools : {}, strings : {}, numbers: {}, unknownFn: null };
 
     if (typeof opts['unknown'] === 'function') {
         flags.unknownFn = opts['unknown'];
@@ -14,7 +14,8 @@ module.exports = function (args, opts) {
           flags.bools[key] = true;
       });
     }
-    
+
+
     var aliases = {};
     Object.keys(opts.alias || {}).forEach(function (key) {
         aliases[key] = [].concat(opts.alias[key]);
@@ -31,6 +32,13 @@ module.exports = function (args, opts) {
             flags.strings[aliases[key]] = true;
         }
      });
+
+    [].concat(opts.number).filter(Boolean).forEach(function (key) {
+        flags.numbers[key] = true;
+        if (aliases[key]) {
+            flags.numbers[aliases[key]] = true;
+        }
+    });
 
     var defaults = opts['default'] || {};
     
@@ -56,7 +64,7 @@ module.exports = function (args, opts) {
             if (flags.unknownFn(arg) === false) return;
         }
 
-        var value = !flags.strings[key] && isNumber(val)
+        var value = flags.numbers[key] || (!flags.strings[key] && isNumber(val))
             ? Number(val) : val
         ;
         setKey(argv, key.split('.'), value);
@@ -134,7 +142,7 @@ module.exports = function (args, opts) {
                 i++;
             }
             else {
-                setArg(key, flags.strings[key] ? '' : true, arg);
+                setArg(key, flags.strings[key] || flags.numbers[key] ? '' : true, arg);
             }
         }
         else if (/^-[^-]+/.test(arg)) {
@@ -168,7 +176,7 @@ module.exports = function (args, opts) {
                     break;
                 }
                 else {
-                    setArg(letters[j], flags.strings[letters[j]] ? '' : true, arg);
+                    setArg(letters[j], flags.strings[letters[j]] || flags.numbers[letters[j]] ? '' : true, arg);
                 }
             }
             
@@ -185,7 +193,7 @@ module.exports = function (args, opts) {
                     i++;
                 }
                 else {
-                    setArg(key, flags.strings[key] ? '' : true, arg);
+                    setArg(key, flags.strings[key] || flags.numbers[key] ? '' : true, arg);
                 }
             }
         }
