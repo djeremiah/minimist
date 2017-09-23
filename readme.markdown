@@ -5,10 +5,6 @@ parse argument options
 This module is the guts of optimist's argument parser without all the
 fanciful decoration.
 
-[![browser support](https://ci.testling.com/substack/minimist.png)](http://ci.testling.com/substack/minimist)
-
-[![build status](https://secure.travis-ci.org/substack/minimist.png)](http://travis-ci.org/substack/minimist)
-
 # example
 
 ``` js
@@ -55,6 +51,7 @@ options can be:
 
 * `opts.string` - a string or array of strings argument names to always treat as
 strings
+* `opts.number` - a string or array of strings argument names to always treat as numbers
 * `opts.boolean` - a boolean, string or array of strings to always treat as
 booleans. if `true` will treat all double hyphenated arguments without equal signs
 as boolean (e.g. affects `--foo`, not `-f` or `--foo=bar`)

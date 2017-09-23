@@ -144,6 +144,61 @@ test('string and alias', function(t) {
     t.end();
 });
 
+test('numbers' , function (t) {
+    var n = parse([ '-n', '0001234' ], { number: 'n' }).n;
+    t.equal(n, 1234);
+    t.equal(typeof n, 'number');
+
+    var x = parse([ '-x', '56' ], { number: 'x' }).x;
+    t.equal(x, 56);
+    t.equal(typeof x, 'number');
+    t.end();
+});
+
+test('empty numbers', function(t) {
+    var n = parse([ '-n' ], { number: 'n' }).n;
+    t.equal(n, 0);
+    t.equal(typeof n, 'number');
+
+    var num = parse([ '--num' ], { number: 'num' }).num;
+    t.equal(num, 0);
+    t.equal(typeof num, 'number');
+
+    var letters = parse([ '-art' ], {
+        number: [ 'a', 't' ]
+    });
+
+    t.equal(letters.a, 0);
+    t.equal(letters.r, true);
+    t.equal(letters.t, 0);
+
+    t.end();
+});
+
+
+test('number and alias', function(t) {
+    var x = parse([ '--num',  '000123' ], {
+        number: 'n',
+        alias: { n: 'num' }
+    });
+
+    t.equal(x.num, 123);
+    t.equal(typeof x.num, 'number');
+    t.equal(x.n, 123);
+    t.equal(typeof x.n, 'number');
+
+    var y = parse([ '-n',  '000123' ], {
+        number: 'num',
+        alias: { num: 'n' }
+    });
+
+    t.equal(y.num, 123);
+    t.equal(typeof y.num, 'number');
+    t.equal(y.n, 123);
+    t.equal(typeof y.n, 'number');
+    t.end();
+});
+
 test('slashBreak', function (t) {
     t.same(
         parse([ '-I/foo/bar/baz' ]),
